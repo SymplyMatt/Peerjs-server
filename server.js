@@ -1,17 +1,10 @@
-const mongoose = require("mongoose");
-const ExpressPeerServer = require('peer').ExpressPeerServer;
-const peerExpress = require('express');
-const peerApp = peerExpress();
-const peerServer = require('http').createServer(peerApp);
-const options = { debug: true }
-const peerPort = 8080;
+const express = require("express");
+const app = express();
+const server = require("http").Server(app);
+const { ExpressPeerServer } = require("peer");
+const opinions = {
+  debug: true,
+}
 
-const cors = require('cors');
-
-const corsOptions = {
-  origin: 'http://localhost:3000', 
-};
-
-peerApp.use('/peerjs', cors(corsOptions), ExpressPeerServer(peerServer, options));
-
-peerServer.listen(peerPort, () => console.log(`Peer server now working on port ${peerPort}`));
+app.use("/peerjs", ExpressPeerServer(server, opinions));
+server.listen(8080, () => console.log(`Server running on port ${8080}`));
